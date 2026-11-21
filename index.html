@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>READY TO SHOP — Discover More. Shop Smarter.</title>
+  <script>
+    /* Runs before paint so the saved or system theme never flashes. */
+    (function () {
+      try {
+        var t = localStorage.getItem('rts:theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'day';
+        document.documentElement.dataset.theme = t;
+      } catch (e) { document.documentElement.dataset.theme = 'day'; }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="loader" id="loader" aria-hidden="true"><span class="loader__mark">RTS</span></div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav" id="nav">
+    <a class="logo" href="#/" aria-label="Ready to Shop home"><span class="logo__r">R</span>EADY <span
+        class="logo__s">TO SHOP</span></a>
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href="#/">Home</a><a href="#/shop">Shop</a><a href="#/categories">Categories</a><a
+        href="#/shop?deals=1">Deals</a><a href="#/about">About</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="icon-btn" href="#/search" aria-label="Search">⌕</a>
+      <button class="icon-btn" id="openAssistant" aria-label="Ask AI assistant">✦</button>
+      <a class="icon-btn" id="wishBtn" href="#/wishlist" aria-label="Wishlist">♡<span class="badge"
+          id="wishCount">0</span></a>
+      <a class="icon-btn" id="cartBtn" href="#/cart" aria-label="Cart">🛍<span class="badge" id="cartCount">0</span></a>
+      <a class="icon-btn" href="#/profile" aria-label="Profile">☺</a>
+      <button class="theme" id="themeToggle" role="switch" aria-label="Switch theme" aria-checked="false">
+        <span class="theme__sun">☀</span><span class="theme__moon">☾</span><span class="theme__knob"></span>
+      </button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">≡</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__copy">
+        <h1>Discover More.<br>Shop Smarter.</h1>
+        <p>Experience a new generation of intelligent shopping with personalized recommendations and effortless
+          discovery.</p>
+        <div class="hero__cta">
+          <a class="btn" href="#/shop">Explore Collection</a>
+          <button class="btn btn--ghost" data-open-assistant>Ask AI Assistant</button>
+        </div>
+      </div>
+      <div class="hero__stage" aria-hidden="true">
+        <div class="float f1"><span>🎧</span><b>Aurum Pro</b><i>₹12,999</i></div>
+        <div class="float f2"><span>⌚</span><b>Meridian Watch</b><i>₹8,499</i></div>
+        <div class="float f3"><span>💻</span><b>Slate Air 14</b><i>₹46,999</i></div>
+      </div>
+    </section>
+
+    <section class="sec" id="shop">
+      <h2>Trending now</h2>
+      <div class="grid" id="trending"></div>
+    </section>
+    <section class="sec sec--alt" id="categories">
+      <h2>Shop by category</h2>
+      <div class="cats" id="cats"></div>
+    </section>
+    <section class="sec" id="picks">
+      <h2>AI picks for you</h2>
+      <p class="sub" id="picksNote">Based on what you browse and save.</p>
+      <div class="grid" id="picksGrid"></div>
+    </section>
+    <section class="sec sec--alt" id="deals">
+      <h2>Exclusive deals</h2>
+      <div class="grid" id="dealsGrid"></div>
+    </section>
+    <section class="sec" id="new">
+      <h2>New arrivals</h2>
+      <div class="grid" id="newGrid"></div>
+    </section>
+    <section class="sec sec--alt">
+      <h2>Customer reviews</h2>
+      <div class="cats">
+        <blockquote class="cat">“Found the right headphones in two questions.”<br><small>Anika</small></blockquote>
+        <blockquote class="cat">“Clean, fast, and the deals are real.”<br><small>Dev</small></blockquote>
+        <blockquote class="cat">“The gift box was a hit.”<br><small>Maya</small></blockquote>
+      </div>
+    </section>
+    <section class="sec">
+      <h2>Get new arrivals first</h2>
+      <form class="inline" id="news" novalidate><input name="email" type="email" placeholder="you@example.com"
+          aria-label="Email"><button class="btn">Subscribe</button></form>
+    </section>
+  </main>
+  <main id="view" class="sec" hidden tabindex="-1"></main>
+
+  <footer class="foot"><b>READY TO SHOP</b>
+    <nav aria-label="Footer"><a href="#/faq">FAQ</a> · <a href="#/contact">Contact</a> · <a href="#/orders">Orders</a> ·
+      <a href="#/track">Track order</a> · <a href="#/login">Login</a> · <a href="#/register">Register</a> · <a
+        href="#/admin">Admin (demo)</a></nav>
+  </footer>
+
+  <button class="fab" id="fab" aria-label="Open AI shopping assistant">✦</button>
+  <aside class="chat" id="chat" aria-label="AI shopping assistant" hidden>
+    <header><span class="avatar">✦</span><b>Shopping assistant</b><button class="icon-btn" id="closeChat"
+        aria-label="Close">×</button></header>
+    <div class="chat__log" id="chatLog" aria-live="polite"></div>
+    <div class="chat__chips" id="chips"></div>
+    <form class="chat__form" id="chatForm"><input id="chatInput" placeholder="Try: laptop under ₹50,000"
+        autocomplete="off" aria-label="Message"><button class="btn">Send</button></form>
+  </aside>
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/assistant.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
